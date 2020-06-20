@@ -6,9 +6,9 @@ SQL的分类
                                             更新包括添加数据 删除数据 修改数据
   3.数据定义语言（DDL）
     代表关键字create，drop，alter  
-  4.事物控制语言
+  4.事物控制语言（TCL）
     代表关键字commit，rolback
-  5.数据控制语言
+  5.数据控制语言(DCL)
     代表关键字grant，revoke
 
 
@@ -31,7 +31,7 @@ mysql -uroot -p -P3306 -h127.0.0.1
       
 选择数据库：
   语法格式：use 数据库名；
-  例如：use bluegene 
+  例如：use bluegene; 
   注意：如果需要对数据做任何的操作，必须要选择这个数据库以后，才能对这个数据库下的表进行操作
 
 
