@@ -12,8 +12,5 @@
 4.查看表结构：
   desc 表名；
 
-5.查看创建爱你表的语句：
-  show createtable 表名；
-
-6.查看创建表的语句：
+5.查看创建表的语句：
   show create table 表名；
