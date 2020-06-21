@@ -57,4 +57,12 @@
   语法格式：
     字段名 between 开始值 and 结束值
     1.只能应用于数字字段
+    2.他会包含开始值和结束值
+
+5.练习04 
+  获取金额在100到500之间的订单
+  select * from orders where order_money between 100 and 500;
+
+
+
      
