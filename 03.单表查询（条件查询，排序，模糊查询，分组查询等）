@@ -57,11 +57,71 @@
   语法格式：
     字段名 between 开始值 and 结束值
     1.只能应用于数字字段
-    2.他会包含开始值和结束值
+    2.它是包含开始值和结束值
 
 5.练习04 
   获取金额在100到500之间的订单
   select * from orders where order_money between 100 and 500;
+
+6.is null获取列为空的数据
+  语法格式：
+    字段名 is null
+  注意：1.如果需要获取某个列为null的数据时不能使用字段名=null 或 字段名='null'
+        2.is null只能获取数据本身为null，但不能获取数据内容为null的数据
+	String str=null；---> 数据本身为空
+        String str1="null"；---> 数据内容为空
+
+7.练习05
+  获取没有订单备注的订单
+  SELECT * FROM orders WHERE remark IS NULL
+  获取公司中的最高领导（没有上级）
+  select * from emp where mgr is null；
+
+8.and和or运算符
+  and要求两侧的条件都为真这条数据才会被获取，and相当于java中的&&
+  or要求两侧的条件有一个为真数据就会被获取，相当于java中的||
+  语法格式：
+          字段名 =数据 and 字段名 =数据  .......
+	  字段名 =数据 or 字段名 =数据   .......
+  注意：由于and的优先级要比or高，实际应用中可根据业务的逻辑适当的添加（）以提升优先级
+
+9.练习06
+  获取订单金额大于100并且小于等于500的订单
+  select * from emp where order_money >100 and order_money <=500;
+  获取职位是办事员（clerk）或者职位是销售员（salesman）的所有员工
+  select * from emp where job='clerk' or job='salesman'
+  获取部门20和部门30中的所有办事员（clerk）
+  select * from emp dept=20 and job='clerk' or dept=30 and job='clerk'
+  错误的：由于and的优先级要比or的高，所以sql语句会先执行and获取出部门30中的办事员及部门20中的所有员工
+  select * from emp where dept=20 or dept=30 and job='clerk'
+  正确的：提升or的优先级
+  select * from emp where （dept=20 or dept=30） and job='clerk'
+
+10.in运算符：获取所有包含在某个范围内的所有数据
+   语法格式：
+    字段名 in （数据1，数据2，...数据n）
+   注意：
+   1.in的底层业务逻辑规则与or是相同的
+   2.由于or的运算速度比较慢，因此在实际应用中应尽量去避免or和in的使用
+
+11.练习07 
+    获取职位是办事员（clerk）或者职位是销售员（salesman）的所有员工
+    select * from emp where job in ('clerk','salesman');
+
+12.not运算符：表示取反的意思必须配合 is null 或 in 一起使用才有效
+   not in：表示不包含在某个范围内容
+     语法格式：字段名 in （数据1，数据2，...数据n）
+     注意：not in的底层业务逻辑规则与and是相同的
+   is not null 表示不为空的
+     语法格式：字段名 is not null
+
+13.练习08   
+   获取职位不是办事员（clerk）或者职位不是销售员（salesman）的所有员工
+   select * from emp where job not in ('clerk','salesman');
+   获取所有有备注的订单
+   select * from orders where remark is not null;
+
+
 
 
 
