@@ -1,0 +1,61 @@
+#创建员工表
+CREATE TABLE `ygb` (
+  `ygh` varchar(10) NOT NULL COMMENT '员工号',
+  `xm` varchar(10) DEFAULT NULL COMMENT '员工姓名',
+  `xb` varchar(2) DEFAULT NULL COMMENT '性别',
+  PRIMARY KEY (`ygh`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+#向员工表中插入数据
+INSERT INTO ygb(ygh,xm,xb)VALUE('01101','张三','男');
+INSERT INTO ygb(ygh,xm,xb)VALUE('01102','李四','男');
+INSERT INTO ygb(ygh,xm,xb)VALUE('01103','王五','女');
+
+#创建销售表
+CREATE TABLE `xsb` (
+  `id` varchar(10) NOT NULL COMMENT '主键，销售单号',
+  `ygh` varchar(10) DEFAULT NULL COMMENT '员工号',
+  `rq` varchar(10) DEFAULT NULL COMMENT '销售日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+#向销售表中插入数据
+INSERT INTO xsb(id,ygh,rq)VALUE('0101','01101','2019-5-9');
+INSERT INTO xsb(id,ygh,rq)VALUE('0105','01101','2019-5-9');
+INSERT INTO xsb(id,ygh,rq)VALUE('0102','01102','2019-5-9');
+INSERT INTO xsb(id,ygh,rq)VALUE('0103','01103','2019-5-9');
+
+#创建物品表
+CREATE TABLE `wpb` (
+  `wpid` bigint(20) NOT NULL COMMENT '主键，物品编号',
+  `wpjg` int(11) DEFAULT NULL COMMENT '价格',
+  `wpmc` varchar(50) DEFAULT NULL COMMENT '物品名称',
+  PRIMARY KEY (`wpid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+#向物品表中插入数据
+INSERT INTO wpb(wpid,wpjg,wpmc)VALUE(1,200,'光驱');
+INSERT INTO wpb(wpid,wpjg,wpmc)VALUE(2,350,'硬盘');
+INSERT INTO wpb(wpid,wpjg,wpmc)VALUE(3,120,'机箱');
+INSERT INTO wpb(wpid,wpjg,wpmc)VALUE(4,300,'CPU');
+INSERT INTO wpb(wpid,wpjg,wpmc)VALUE(5,320,'主板');
+
+#创建销售细节表
+CREATE TABLE `xsxb` (
+  `id` bigint(20) NOT NULL COMMENT '主键，流水号',
+  `xsh` varchar(10) DEFAULT NULL COMMENT '销售单号',
+  `wp` bigint(20) DEFAULT NULL COMMENT '物品编号',
+  `wpsl` int(11) DEFAULT NULL COMMENT '物品数量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+#向销售细节表中插入数据
+INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(1,'0101',1,2);
+INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(2,'0101',3,3);
+INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(3,'0101',4,1);
+INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(4,'0101',2,4);
+INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(5,'0101',3,5);
+INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(6,'0101',1,8);
+INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(7,'0101',4,6);
+
+1.请查出销售单具体都有哪些物品，需要显示的列如下
+  销售单号 物品名称 数量 价格
+  SELECT xsb.id,wpb.wpmc,xsxb.wpsl,wpb.wpjg FROM xsb 
+  INNER JOIN xsxb ON xsb.id=xsxb.xsh 
+  INNER JOIN wpb ON xsxb.wp=wpb.wpid; 
