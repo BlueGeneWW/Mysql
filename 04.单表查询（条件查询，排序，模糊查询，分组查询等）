@@ -59,3 +59,4 @@ INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(7,'0101',4,6);
   SELECT xsb.id,wpb.wpmc,xsxb.wpsl,wpb.wpjg FROM xsb 
   INNER JOIN xsxb ON xsb.id=xsxb.xsh 
   INNER JOIN wpb ON xsxb.wp=wpb.wpid; 
+  ע�⣺ inner join
