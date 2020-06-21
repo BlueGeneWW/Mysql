@@ -52,3 +52,9 @@
   select * from orders where order_money>=100;
   获取所有不是部门（dept）中的所有员工
   select * from dept where deptno!=20;
+
+4.btween...and...运算符获取某个区间范围内 的数据
+  语法格式：
+    字段名 between 开始值 and 结束值
+    1.只能应用于数字字段
+     
