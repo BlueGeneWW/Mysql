@@ -1,0 +1,19 @@
+1.查询当前使用的数据库：
+  select database();
+  查询数据库版本：
+  select version();
+
+2.中止一条语句：
+  如果想要中止一条正在编写的语句可以键入“\c”.
+
+3.退出mysql：
+  有四种退出方式："\q","QUIT","EXIT",或者键盘ctrl+c
+
+4.查看表结构：
+  desc 表名；
+
+5.查看创建爱你表的语句：
+  show createtable 表名；
+
+6.查看创建表的语句：
+  show create table 表名；
