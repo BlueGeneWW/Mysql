@@ -47,11 +47,11 @@ CREATE TABLE `xsxb` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 #向销售细节表中插入数据
 INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(1,'0101',1,2);
-INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(2,'0101',3,3);
+INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(2,'0105',3,3);
 INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(3,'0101',4,1);
-INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(4,'0101',2,4);
+INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(4,'0102',2,4);
 INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(5,'0101',3,5);
-INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(6,'0101',1,8);
+INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(6,'0103',1,8);
 INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(7,'0101',4,6);
 
 1.请查出销售单具体都有哪些物品，需要显示的列如下
@@ -60,3 +60,31 @@ INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(7,'0101',4,6);
   INNER JOIN xsxb ON xsb.id=xsxb.xsh 
   INNER JOIN wpb ON xsxb.wp=wpb.wpid; 
   注意： inner join
+
+2.请查出所有员工，都有哪些销售单，需要显示的列如下
+  姓名 销售单号
+  select ygb.xm,xsb.id from ygb inner join xsb on ygb.ygh=xsb.ygh;
+
+3.请查出所有员工，都销售了哪些物品，需要显示的列如下
+  姓名 销售单号 物品名称
+   SELECT ygb.xm,xsb.id,wpb.wpmc FROM xsb 
+  INNER JOIN xsxb ON xsb.id=xsxb.xsh 
+  INNER JOIN wpb ON xsxb.wp=wpb.wpid
+  inner join ygb on ygb.ygh=xsb.ygh; 
+  或
+  SELECT ygb.xm '员工姓名',xsb.id AS '销售单号',wpb.wpmc '物品名称' FROM xsb 
+  INNER JOIN xsxb ON xsb.id=xsxb.xsh 
+  INNER JOIN wpb ON xsxb.wp=wpb.wpid
+  INNER JOIN ygb ON ygb.ygh=xsb.ygh; 
+  注意： inner join
+
+4.请查询张三一共销售了多少钱，统计出金额来
+  根据姓名找出张三的销售单号
+  SELECT MAX(ygb.xm),SUM(wpb.wpjg*xsxb.wpsl) FROM ygb INNER JOIN xsb ON ygb.ygh=xsb.ygh 
+  INNER JOIN xsxb ON xsb.id=xsxb.xsh
+  INNER JOIN wpb ON xsxb.wp=wpb.wpid
+  WHERE ygb.xm='张三';
+
+5.统计出哪种商品销售数量最多
+  SELECT wpb.wpmc AS '物品名称',SUM(xsxb.wpsl) '物品销售数量' FROM xsxb INNER JOIN wpb ON wpb.wpid=xsxb.wp GROUP BY wpb.wpmc 
+  
