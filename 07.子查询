@@ -1,0 +1,94 @@
+-------------------子查询就是嵌套的sql语句，可以理解为子查询就是一张表--------------------------
+1.子查询可以出现的三个位置
+  1.子查询可以出现在where的后面作为一个或多个数据
+  注意：这个子查询子查询只能返回1列n行的数据，
+        如果返回的是一列一行数据可以使用简单条件
+        如 = < <= > >= !=
+	如果返回的是一行多列数据那么只能使用in或 not in
+  2.出现在from后面作为一个临时表
+  注意：这个子查询可以返回n行n列数据，这个子查询的显示列名作为临时表的字段名，
+        如果子查询中使用了函数，必须要为这个显示列起别名
+  3.出现在select后面作为显示列的一部分
+  注意：这个子查询需要返回一行一列数据
+        每一条记录都会执行一次这个字子查询因此效率非常的低不推荐使用
+
+2.整体的注意事项：
+  1.无论子查询出现在什么位置上，子查询必须要放在（）里
+ 
+3.练习（where中使用子查询）
+  练习01
+    获取工资高于公司平均工资的员工
+    思路：
+    1.获取公司的平均工资 
+    select avg(sal) from emp 
+    2.使用步骤1的语句作为查询条件，获取工资高于步骤1的结果所有记录
+    select * from emp where sal>(elect avg(sal) from emp)
+
+4.练习（from中使用子查询）
+  练习02
+    查询员工信息，查询哪些人是管理者，要求显示出其员工编号和员工姓名
+    思路：
+    1.获取所有的管理者的编号
+      select mgr from emp where mgr is not null group by mgr;//group by 聚合函数消除重复数据
+    2.使用步骤1的查询语句作为临时表temptable然后使用emp与temptable进行多表查询，
+      使用emp中的empno与temptable中的mgr消除笛卡尔积
+      select * from emp e inner join temptable tt on e.empno=tt.mgr
+    3.使用步骤1的查询语句替换步骤2中的temptable
+      select * from emp e inner join (select mgr from emp where mgr is not null group by mgr) tt on e.empno=tt.mgr;
+
+5.练习（select中使用子查询）
+  练习03
+    获取员工的信息以及部门的名称
+    思路：
+    1.获取所有的员工信息
+    select * from emp e
+    2.在步骤1的显示列中添加一个子查询，
+      要根据当前记录中的员工的部门编号作为条件查询dept表中的对应的部门名称
+    select *,(select dname from dept where deptno=e.deptno) from emp e
+
+-------------------查询结果合并-----------------------
+6.union可以合并集合（相加）
+  将多条sql语句的查询结果合并成一个结果
+  语法格式：
+  select语句1
+  union [all]//可选参数
+  select语句2
+  ...
+  union [all]//可选参数
+  select语句n
+  注意：
+    1.union的all是可选的表示获取多条语句中所有数据内容包括重复的,默认表示消除重复
+      all的效率较高，如果可以确定这些语句中没有重复的数据可以使用union all
+    2.这些语句中的返回的列数必须要完全相等
+    3.所有的语句中的每个列的数据列类型必须完全对应相等（针对列的数据类型）
+    4.所有的语句中每个列的含义也必须相同（例如同一列中出现职位，姓名的错误情况）
+    5.这个合并效率不高，因此不推荐使用
+  练习04
+  查询job包含MANAGER和包含SALESMAN的员工(不使用union实现)
+  select * from emp where job in('MANAGER','SALESMAN');
+  查询job包含MANAGER和包含SALESMAN的员工(使用union实现)
+  select * from emp where job='MANAGER'
+  union
+  select * from emp where job='SALESMAN';
+-------------------分页查询limit-----------------------
+7.limit的使用
+  1.获取数据库中表中的一部分数据内容，用来提高数据库的响应速度，比较适合
+    数据量大的时候，分页也可以提高用户的体验。
+  语法格式：
+    select 显示列 from 表名 [where] [group by[having]] [order by] limit 跳过的记录数量,获取多少条记录
+    跳过的记录数量：取值为正整数，大于等于0
+    获取的记录数量：取值为正整数，大于0
+    练习05
+      获取前5条记录
+      select * from emp limit 0,5;
+      获取6到10的记录
+      select * from emp limit 5,5;
+      获取薪水最高的前5个人
+      select * from emp order by sal desc limit 0,5;
+
+  
+  
+
+    
+  
+
