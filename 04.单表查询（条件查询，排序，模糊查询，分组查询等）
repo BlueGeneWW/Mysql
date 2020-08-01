@@ -1,10 +1,10 @@
 #创建员工表
 CREATE TABLE `ygb` (
-  `ygh` varchar(10) NOT NULL COMMENT '员工号',
+  `ygh` varchar(10) NOT NULL COMMENT '员工号',  <---***--->
   `xm` varchar(10) DEFAULT NULL COMMENT '员工姓名',
   `xb` varchar(2) DEFAULT NULL COMMENT '性别',
   PRIMARY KEY (`ygh`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8  <---***--->
 #向员工表中插入数据
 INSERT INTO ygb(ygh,xm,xb)VALUE('01101','张三','男');
 INSERT INTO ygb(ygh,xm,xb)VALUE('01102','李四','男');
@@ -25,8 +25,8 @@ INSERT INTO xsb(id,ygh,rq)VALUE('0103','01103','2019-5-9');
 
 #创建物品表
 CREATE TABLE `wpb` (
-  `wpid` bigint(20) NOT NULL COMMENT '主键，物品编号',
-  `wpjg` int(11) DEFAULT NULL COMMENT '价格',
+  `wpid` bigint(20) NOT NULL COMMENT '主键，物品编号',  <---***--->
+  `wpjg` int(11) DEFAULT NULL COMMENT '价格',  <---***--->
   `wpmc` varchar(50) DEFAULT NULL COMMENT '物品名称',
   PRIMARY KEY (`wpid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
@@ -70,7 +70,7 @@ INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(7,'0101',4,6);
    SELECT ygb.xm,xsb.id,wpb.wpmc FROM xsb 
   INNER JOIN xsxb ON xsb.id=xsxb.xsh 
   INNER JOIN wpb ON xsxb.wp=wpb.wpid
-  inner join ygb on ygb.ygh=xsb.ygh; 
+  INNER JOIN ygb on ygb.ygh=xsb.ygh; 
   或
   SELECT ygb.xm '员工姓名',xsb.id AS '销售单号',wpb.wpmc '物品名称' FROM xsb 
   INNER JOIN xsxb ON xsb.id=xsxb.xsh 
@@ -80,11 +80,20 @@ INSERT INTO xsxb(id,xsh,wp,wpsl)VALUE(7,'0101',4,6);
 
 4.请查询张三一共销售了多少钱，统计出金额来
   根据姓名找出张三的销售单号
-  SELECT MAX(ygb.xm),SUM(wpb.wpjg*xsxb.wpsl) FROM ygb INNER JOIN xsb ON ygb.ygh=xsb.ygh 
+  SELECT ygb.xm '员工姓名',xsb.id '销售单号',wpb.wpmc '物品名称',wpb.wpjg '物品价格',
+  xsxb.wpsl '物品数量',wpb.wpjg*xsxb.wpsl '该物品数量乘以价格' FROM ygb 
+  INNER JOIN xsb ON ygb.ygh=xsb.ygh 
+  INNER JOIN xsxb ON xsb.id=xsxb.xsh 
+  INNER JOIN wpb ON xsxb.wp=wpb.wpid
+  where ygb.xm='张三';  <---***--->
+  然后
+  SELECT MAX(ygb.xm),SUM(wpb.wpjg*xsxb.wpsl) FROM ygb 
+  INNER JOIN xsb ON ygb.ygh=xsb.ygh 
   INNER JOIN xsxb ON xsb.id=xsxb.xsh
   INNER JOIN wpb ON xsxb.wp=wpb.wpid
   WHERE ygb.xm='张三';
 
 5.统计出哪种商品销售数量最多
-  SELECT wpb.wpmc AS '物品名称',SUM(xsxb.wpsl) '物品销售数量' FROM xsxb INNER JOIN wpb ON wpb.wpid=xsxb.wp GROUP BY wpb.wpmc 
+  SELECT wpb.wpmc AS '物品名称',SUM(xsxb.wpsl) '物品销售数量' FROM xsxb 
+  INNER JOIN wpb ON wpb.wpid=xsxb.wp GROUP BY wpb.wpmc  <---***--->  
   
